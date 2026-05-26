@@ -1,4 +1,4 @@
-# Storm Surge ML Emulators for the Northern Adriatic Sea
+# Storm Surge ML Emulators for the northern Adriatic Sea
 
 This repository contains the implementation of machine learning (ML) emulators for storm surge prediction and statistical downscaling in the northern Adriatic Sea, developed within the framework of the study Campos-Caba et al. (2025). 
 
