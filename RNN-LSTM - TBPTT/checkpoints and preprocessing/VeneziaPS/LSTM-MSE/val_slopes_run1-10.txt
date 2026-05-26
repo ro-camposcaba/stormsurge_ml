@@ -1,0 +1,10 @@
+Run 0: slope = 0.846860
+Run 1: slope = 0.777834
+Run 2: slope = 0.785536
+Run 3: slope = 0.775223
+Run 4: slope = 0.812904
+Run 5: slope = 0.841816
+Run 6: slope = 0.778368
+Run 7: slope = 0.825673
+Run 8: slope = 0.801886
+Run 9: slope = 0.776786

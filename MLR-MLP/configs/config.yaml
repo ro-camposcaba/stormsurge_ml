@@ -1,0 +1,58 @@
+# =====================================================
+# Base configuration for ML emulators
+# =====================================================
+
+# Output directory 
+output_dir: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/tests/Trieste/MLP-MADc"
+
+# Output size (single time series)
+output_size: 1
+
+# Training parameters
+time_offset: 1         # time_offset = 1 Because observations start at 1987/01/01 01:00. This can be modified based on each location information
+lr: 0.001
+start_run: 0           # If run is stopped (by any reason), user can restart the execution by changing the start_run value (start_run: 0 emulator starts at run 1)		
+num_runs: 40           # Number of runs desired
+
+# Loss function:
+###### MADc loss function #####
+loss_function: MADcLossSquared
+loss_module: src.loss
+###### MSE loss function #####
+#loss_function: MSELoss
+#loss_module: torch.nn
+
+# Model type and hyperparameters:
+###### MLR emulator #####
+#model_type: mlr
+#epochs: 10000
+
+###### MLP emulator #####
+model_type: mlp
+hidden_layer_sizes: [120, 120]
+epochs: 800
+           
+# Device
+device: auto             # Automatically uses CPU or GPU if available
+
+# Data paths
+data_paths:
+  predictand: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictand/Trieste/Trieste.txt"
+  cmems: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/Trieste/ssh.txt"
+  tide: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/Trieste/tide.txt"
+  mslp: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/Trieste/mslp.txt"
+  u10: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/Trieste/stressx.txt"
+  v10: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/Trieste/stressy.txt"
+
+# Time splits
+years:
+  train: [[1987, 1992], [1997, 2018]]
+  val: [1993, 1994, 2019]
+  test: [1995, 1996, 2020]
+
+# =====================================================
+# Output / diagnostics control
+# =====================================================
+save_plots: false
+save_test_results: true
+compute_full_metrics: true

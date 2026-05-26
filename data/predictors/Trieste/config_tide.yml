@@ -1,0 +1,10 @@
+fes_root: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/Surge-repository/data/coarse data/fes2014"
+coordinates:
+  lon: 13.25
+  lat: 45.68
+time_range:
+  start: "1987-01-01T00:00:00"
+  end: "2022-12-31T23:00:00"
+output:
+  file: "tide.txt"
+num_threads: 1

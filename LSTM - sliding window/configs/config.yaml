@@ -1,0 +1,84 @@
+# =====================================================
+# Base configuration for ML emulators (LOOK-BACK WINDOW)
+# =====================================================
+
+# Output directory 
+output_dir: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/tests/Trieste/LSTM-MSE_L03"
+
+# Output size
+output_size: 1
+
+# =====================================================
+# Training parameters
+# =====================================================
+time_offset: 1         # time_offset = 1 Because observations start at 1987/01/01 01:00. This can be modified based on each location information
+lr: 0.001
+batch_mode: fraction
+n_splits: 6
+epochs: 800
+
+start_run: 0
+num_runs: 2
+
+# Look-back window (in hours)
+lookback: 3
+
+# =====================================================
+# Loss function
+# =====================================================
+###### MADc loss function #####
+#loss_function: MADcLossSquared
+#loss_module: src.loss
+###### MSE loss function #####
+loss_function: MSELoss
+loss_module: torch.nn
+
+# =====================================================
+# Early stopping (optional)
+# =====================================================
+early_stopping: false
+validate_every: 100
+patience: 30        #effective patience = patience * validate_every
+min_delta: 0.0001
+
+# =====================================================
+# Model type and hyperparameters
+# =====================================================
+###### LSTM simple emulator #####
+model_type: lstm_simple
+hidden_layer_size: 120
+
+###### LSTM hybrid emulator #####
+#model_type: lstm_hybrid
+#hidden_layer_size: 60
+
+# =====================================================
+# Device
+# =====================================================
+device: auto
+
+# =====================================================
+# Data paths
+# =====================================================
+data_paths:
+  predictand: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictand/Trieste/Trieste.txt"
+  cmems: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/Trieste/ssh.txt"
+  tide: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/Trieste/tide.txt"
+  mslp: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/Trieste/mslp.txt"
+  u10: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/Trieste/stressx.txt"
+  v10: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/Trieste/stressy.txt"
+
+# =====================================================
+# Time splits
+# =====================================================
+years:
+  train: [[1987, 1992], [1997, 2018]]
+  val: [1993, 1994, 2019]
+  test: [1995, 1996, 2020]
+
+# =====================================================
+# Output / diagnostics
+# =====================================================
+save_plots: false
+save_test_results: true
+compute_full_metrics: true

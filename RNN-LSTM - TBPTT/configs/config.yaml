@@ -1,0 +1,79 @@
+# =====================================================
+# Base configuration for ML emulators
+# =====================================================
+
+# Output directory 
+output_dir: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/tests/VeneziaPS/RNN-MSE_lr0005"
+
+# Output size (single time series)
+output_size: 1
+
+# Training parameters
+time_offset: 1         # time_offset = 1 Because observations start at 1987/01/01 01:00. This can be modified based on each location information
+chunk_size: 1024        # Added for the proper use of the TBPTT approach. This represents the time-step to cut the gradients periodically: (1, chunk_size, input_size) → (1, chunk_size, input_size) → ... sequentially
+#batch_size: 1         # Considered only if use_sequences: true
+lr: 0.0005              # lr: 0.001 for LSTM | lr: 0.0005 for RNN
+start_run: 0           # If run is stopped (by any reason), user can restart the execution by changing the start_run value (start_run: 0 emulator starts at run 1)		
+num_runs: 40           # Number of runs desired. It must be num_runs = start_run + number of desider runs
+
+# Loss function:
+###### MADc loss function #####
+#loss_function: MADcLossSquared
+#loss_module: src.loss
+###### MSE loss function #####
+loss_function: MSELoss
+loss_module: torch.nn
+
+# For the use of MADp global
+use_global_madp: False         # use_global_madp: True will estimate the MADp on the buffer | use_global_madp: False is going to estimate the MADp on the chunk
+alpha_madp: 1.0                # This parameters allows to give more weight to MADp if desired
+buffer_max_size: 100000        # Size of the buffer in which MADp is going to be estimated
+madp_percentiles_full: False   # madp_percentiles_full: False --> Uses the percentiles defined in the train.py script, which was customized for more detail on higher percentiles
+#madp_percentiles: [0.50, 0.75, 0.90, 0.95, 0.98, 0.99, 0.995]
+
+# Fast-search mode
+#use_sequences: true    # For RNN and LSTM emulators. use_sequences: false doesn't use look-back window
+#early_stopping: false   # Not needed if use_sequences: false. It is used for use_sequences: true to avoid long computational times, since this approach uses big predictors, making the model heavier
+#validate_every: 2      # Not needed if early_stopping: false
+#patience: 20           # Not needed if early_stopping: false
+#min_delta: 0.0001      # Not needed if early_stopping: false
+
+# Model type and hyperparameters:
+###### RNN/LSTM simple emulator #####
+model_type: rnn_simple
+#model_type: lstm_simple
+hidden_layer_size: 120
+epochs: 800
+seq_len: 0
+               
+###### RNN/LSTM hybrid emulator #####
+#model_type: rnn_hybrid
+#model_type: lstm_hybrid
+#hidden_layer_size: 60
+#epochs: 800
+#seq_len: 0              
+           
+# Device
+device: auto             # Automatically uses CPU or GPU if available
+
+# Data paths
+data_paths:
+  predictand: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictand/VeneziaPS/VeneziaPS.txt"
+  cmems: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/VeneziaPS/ssh.txt"
+  tide: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/VeneziaPS/tide.txt"
+  mslp: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/VeneziaPS/mslp.txt"
+  u10: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/VeneziaPS/stressx.txt"
+  v10: "C:/Users/Rodrigo/Desktop/Rodrigo/02 - Research fellow/01 - Storm surge ML downscaling/surge_ml/data/predictors/VeneziaPS/stressy.txt"
+
+# Time splits
+years:
+  train: [[1987, 1992], [1997, 2018]]
+  val: [1993, 1994, 2019]
+  test: [1995, 1996, 2020]
+
+# =====================================================
+# Output / diagnostics control
+# =====================================================
+save_plots: false
+save_test_results: true
+compute_full_metrics: true
